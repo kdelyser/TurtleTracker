@@ -3,7 +3,7 @@
 # Description: Parses a line of ARGOS tracking data
 #
 # Created by: Kendall DeLyser (kendall.delyser@duke.edu)
-# Created on: Sept, 2018
+# Created on: Oct, 2018
 
 # Create a variable pointing to the file with no header
 fileName = "SaraNoHeader.txt"
@@ -11,11 +11,19 @@ fileName = "SaraNoHeader.txt"
 # Open the file as a read-only file object
 fileObj = open(fileName, 'r')
 
-# Extract the first line from the file
-lineString = fileObj.readline()
+# Read the first line from the open file object
+lineStrings = fileObj.readlines()
+print ("There are {} records in the file".format(len(lineStrings)))
+    
+# Close the file object
+fileObj.close()
 
-# Loop through the lines until all lines have been read
-while lineString:  #this will run as long as the variable lineString has a value (so don't need to set it equal to anything or use another conditional statement)
+# Create empty dictionaries
+dateDict = {}
+locationDict = {}
+
+# Use a for loop to read each line, one at a time, until the list is exhausted
+for lineString in lineStrings:
 
     # Use the split command to parse the items in lineString into a list object
     lineData = lineString.split("\t")
@@ -29,12 +37,10 @@ while lineString:  #this will run as long as the variable lineString has a value
     obsLat = lineData[5]                # Observation Latitude
     obsLon = lineData[6]                # Observation Longitude
 
-    # Print information to the user
-    print ("Record {0} indicates Sara was seen at {1}N and {2}W on {3}".format(recordID,obsLat,obsLon,obsDate))
+    # Add values to dictionary
+    dateDict[recordID] = obsDateTime   
+    locationDict[recordID] = (obsLat, obsLon) 
 
-    # Move to the next line (will point to a None object once it reaches the end of the file)
-    lineString = fileObj.readline()
-
-# Close the file
-fileObj.close()
+# Indicate script is complete
+print ("Finished")
     
